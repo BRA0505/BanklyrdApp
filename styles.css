@@ -1,0 +1,142 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+:root { --primary: #004aad; --secondary: #00a8e8; --accent: #00c853; --dark: #001f3f; --bg: #f3f4f6; --white: #ffffff; --text: #333; --gray: #888; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+.hidden { display: none !important; }
+.full-btn { width: 100%; margin-top: 10px; }
+.full-select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+.info-text { color: var(--gray); font-size: 0.9rem; margin-bottom: 20px; text-align: center; }
+
+/* --- LOGIN / REGISTRO CON IMAGEN DE FONDO --- */
+.auth-container {
+    height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    /* Imagen de Rascacielos/Ciudad Financiera */
+    background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+/* Capa oscura sobre la imagen */
+.auth-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(0,31,63,0.9) 0%, rgba(0,74,173,0.8) 100%);
+    z-index: 1;
+}
+
+.auth-box { background: var(--white); padding: 40px; border-radius: 12px; width: 380px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10; position: relative; }
+.auth-logo { font-size: 2rem; color: var(--primary); margin-bottom: 20px; font-weight: bold; }
+.input-group { position: relative; margin-bottom: 15px; }
+.input-group i { position: absolute; left: 15px; top: 12px; color: var(--gray); }
+.input-group input { width: 100%; padding: 10px 10px 10px 40px; border: 1px solid #ddd; border-radius: 6px; }
+.btn-primary { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; transition: 0.3s; }
+.btn-primary:hover { background: var(--dark); }
+.switch-auth { margin-top: 15px; font-size: 0.9rem; }
+.switch-auth a { color: var(--primary); font-weight: bold; text-decoration: none; }
+
+/* Quick Access */
+.quick-access-bar { margin-top: 30px; display: flex; gap: 30px; z-index: 10; position: relative; }
+.quick-btn { display: flex; flex-direction: column; align-items: center; color: white; cursor: pointer; transition: transform 0.2s; }
+.quick-btn:hover { transform: translateY(-5px); }
+.icon-circle { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.3); }
+.quick-btn span { font-size: 0.8rem; opacity: 0.9; }
+
+/* --- DASHBOARD --- */
+.dashboard-layout { display: flex; height: 100vh; }
+.sidebar { width: 260px; background: var(--white); display: flex; flex-direction: column; border-right: 1px solid #ddd; }
+.brand { padding: 25px; font-size: 1.5rem; color: var(--primary); font-weight: bold; border-bottom: 1px solid #eee; }
+.sidebar nav { flex: 1; padding-top: 10px; }
+.sidebar li { padding: 15px 25px; cursor: pointer; color: var(--text); transition: 0.2s; list-style: none; display: flex; gap: 10px; align-items: center; }
+.sidebar li:hover, .sidebar li.active { background: #eef5ff; color: var(--primary); border-left: 4px solid var(--primary); }
+.logout-area { padding: 20px; }
+.logout-area button { width: 100%; padding: 10px; background: #ffebee; color: #d32f2f; border: none; border-radius: 5px; cursor: pointer; }
+
+.main-content { flex: 1; padding: 30px; overflow-y: auto; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.header-actions { display: flex; align-items: center; gap: 15px; }
+.user-profile { display: flex; align-items: center; gap: 10px; font-weight: 600; transition: transform 0.2s; }
+.user-profile:hover { transform: scale(1.05); } /* Efecto hover en perfil */
+.avatar { width: 35px; height: 35px; background: var(--secondary); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; }
+
+/* --- VISTAS --- */
+.accounts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+.account-card { padding: 20px; border-radius: 12px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.blue-card { background: linear-gradient(45deg, var(--primary), #0066cc); }
+.dark-card { background: linear-gradient(45deg, #2c3e50, #4ca1af); }
+.green-card { background: linear-gradient(45deg, #11998e, #38ef7d); }
+.acc-header { display: flex; justify-content: space-between; opacity: 0.8; font-size: 0.9rem; margin-bottom: 10px; }
+.account-card h3 { font-size: 1.8rem; margin-bottom: 5px; }
+
+.history-container { background: white; padding: 20px; border-radius: 10px; }
+.history-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.history-table th { text-align: left; padding: 10px; color: var(--gray); border-bottom: 1px solid #eee; }
+.history-table td { padding: 12px 10px; border-bottom: 1px solid #f9f9f9; }
+
+.form-container { background: white; padding: 30px; border-radius: 10px; max-width: 500px; margin: 0 auto; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+.form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+
+/* Beneficiarios */
+.beneficiaries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.ben-card { background: white; border: 1px solid #eee; border-radius: 10px; padding: 20px; text-align: center; transition: 0.3s; position: relative; }
+.ben-card:hover { border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.ben-icon { width: 50px; height: 50px; background: #eef5ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px; }
+.ben-alias { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; }
+.ben-name { color: var(--gray); font-size: 0.85rem; margin-bottom: 10px; }
+.ben-bank { background: #f9f9f9; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; display: inline-block; color: #555; }
+
+/* Otros */
+.check-photos { display: flex; gap: 15px; margin-top: 15px; margin-bottom: 15px; }
+.photo-box { flex: 1; background: #f9f9f9; border: 2px dashed #ddd; border-radius: 10px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray); cursor: pointer; transition: 0.3s; }
+.photo-box:hover { border-color: var(--primary); color: var(--primary); background: #eef5ff; }
+.cards-layout { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+.credit-card-visual { width: 360px; height: 220px; background: linear-gradient(135deg, #111, #333); border-radius: 15px; padding: 25px; color: white; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2); font-family: 'Roboto Mono', monospace; }
+.chip { width: 45px; height: 35px; background: #ffd700; border-radius: 5px; margin-bottom: 20px; }
+.card-number { font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 20px; }
+.card-data { display: flex; justify-content: space-between; font-size: 0.8rem; text-transform: uppercase; }
+.card-details-panel { background: white; padding: 20px; border-radius: 10px; width: 300px; }
+.detail-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+.red-text { color: #d32f2f; }
+.green-text { color: var(--accent); }
+.btn-secondary { background: var(--secondary); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; }
+.requests-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.req-card { background: white; padding: 20px; text-align: center; border-radius: 10px; border: 1px solid #eee; }
+.req-card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; margin-top: 10px; cursor: pointer; }
+.quick-actions { display: flex; gap: 10px; margin-bottom: 15px; }
+.btn-outline-sm { flex: 1; border: 1px solid #ddd; background: transparent; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+.btn-outline-sm:hover { background: #f0f0f0; }
+.support-container { display: flex; gap: 20px; justify-content: center; }
+.support-item { background: white; padding: 30px; text-align: center; border-radius: 10px; width: 250px; }
+.support-item i { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+
+/* MODALES */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(5px); }
+.modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; width: 320px; position: relative; }
+.close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; }
+.token-display { font-size: 2.5rem; font-family: 'Roboto Mono', monospace; letter-spacing: 5px; color: var(--primary); margin: 20px 0; font-weight: bold; }
+.timer-bar { height: 5px; background: #eee; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+.bar-fill { height: 100%; background: var(--accent); width: 100%; animation: shrink 60s linear infinite; }
+@keyframes shrink { from { width: 100%; } to { width: 0%; } }
+.wallet-bg { background: linear-gradient(135deg, #1e1e1e, #333); color: white; width: 380px; }
+.white-x { color: white; }
+.nfc-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s; position: relative; overflow: hidden; height: 100px; display: flex; flex-direction: column; justify-content: center; }
+.nfc-card:hover { transform: translateY(-5px) scale(1.02); }
+.nfc-primary { background: linear-gradient(45deg, #004aad, #0078ff); color: white; }
+.nfc-secondary { background: linear-gradient(45deg, #f1c40f, #e67e22); color: white; }
+.nfc-top { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 1.1rem; }
+.nfc-number { margin-top: 10px; font-family: 'Roboto Mono'; letter-spacing: 2px; opacity: 0.9; }
+
+/* MODAL AJUSTES (NUEVO) */
+.settings-box { width: 400px; text-align: left; }
+.settings-box h3 { margin-bottom: 20px; text-align: center; color: var(--primary); }
+.settings-tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+.tab-btn { flex: 1; padding: 10px; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 500; }
+.tab-btn.active { border-bottom-color: var(--primary); color: var(--primary); }
+.checkbox-group { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+.checkbox-group input { width: auto; }
+
+.notification { position: fixed; top: 20px; right: 20px; background: white; padding: 15px 25px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 200; animation: slideIn 0.5s; }
+.notif-content { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.notif-content i { color: var(--accent); }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }

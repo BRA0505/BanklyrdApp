@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankly RD | Banca Total</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="notification" class="notification hidden">
+        <div class="notif-content">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="notif-msg">Operación Exitosa</span>
+        </div>
+    </div>
+
+    <div id="token-modal" class="modal hidden">
+        <div class="modal-content token-box">
+            <span class="close-modal" onclick="toggleToken()">&times;</span>
+            <h3><i class="fa-solid fa-shield-halved"></i> Token Digital</h3>
+            <div class="token-display" id="token-code">------</div>
+            <p>Clave dinámica válida por 60 seg.</p>
+            <div class="timer-bar"><div class="bar-fill"></div></div>
+        </div>
+    </div>
+
+    <div id="pay-card-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePayModal()">&times;</span>
+            <h3>Pagar Tarjeta de Crédito</h3>
+            <p>Deuda Actual: <strong class="red-text" id="modal-cc-debt">RD$ 0.00</strong></p>
+            <form id="form-pay-card" style="margin-top: 20px;">
+                <div class="form-group"><label>Pagar desde:</label><select id="pay-origin-account" class="full-select"><option value="savings">Cuenta Ahorro</option><option value="payroll">Cuenta Nómina</option><option value="digital">Cuenta Digital</option></select></div>
+                <div class="form-group"><label>Monto a Pagar</label><input type="number" id="pay-card-amount" placeholder="Monto" required></div>
+                <div class="quick-actions"><button type="button" class="btn-outline-sm" onclick="setFullPayment()">Pago Total</button><button type="button" class="btn-outline-sm" onclick="setMinPayment()">Pago Mínimo</button></div>
+                <button type="submit" class="btn-primary full-btn">Confirmar Pago</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="nfc-wallet-modal" class="modal hidden">
+        <div class="modal-content wallet-bg">
+            <span class="close-modal white-x" onclick="toggleNFCWallet()">&times;</span>
+            <h3 style="color:white; margin-bottom:20px;">Acerca al Datáfono <i class="fa-solid fa-wifi fa-rotate-90"></i></h3>
+            <div class="nfc-card nfc-primary"><div class="nfc-top"><span>Bankly Black</span><i class="fa-brands fa-cc-visa"></i></div><div class="nfc-number">**** 9012</div></div>
+            <div class="nfc-card nfc-secondary"><div class="nfc-top"><span>Débito Gold</span><i class="fa-brands fa-cc-mastercard"></i></div><div class="nfc-number">**** 5501</div></div>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-top: 20px;">Selecciona una tarjeta para pagar</p>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content settings-box">
+            <span class="close-modal" onclick="toggleSettings()">&times;</span>
+            <h3><i class="fa-solid fa-gear"></i> Configuración</h3>
+            
+            <div class="settings-tabs">
+                <button class="tab-btn active" onclick="showTab('security')">Seguridad</button>
+                <button class="tab-btn" onclick="showTab('profile')">Perfil</button>
+            </div>
+
+            <div id="tab-security" class="tab-content">
+                <form id="change-pass-form">
+                    <div class="form-group"><label>Contraseña Actual</label><input type="password" id="old-pass" required></div>
+                    <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="new-pass" required></div>
+                    <div class="form-group"><label>Confirmar Nueva</label><input type="password" id="confirm-pass" required></div>
+                    <button type="submit" class="btn-primary full-btn">Actualizar Contraseña</button>
+                </form>
+            </div>
+
+            <div id="tab-profile" class="tab-content hidden">
+                <form id="update-profile-form">
+                    <div class="form-group"><label>Correo Electrónico</label><input type="email" id="profile-email" placeholder="correo@ejemplo.com"></div>
+                    <div class="form-group"><label>Teléfono</label><input type="text" id="profile-phone" placeholder="809-000-0000"></div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="notif-check" checked> <label for="notif-check">Recibir Notificaciones</label>
+                    </div>
+                    <button type="submit" class="btn-primary full-btn">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-overlay"></div> <div class="auth-box">
+            <div class="auth-logo"><i class="fa-solid fa-building-columns"></i> Bankly<span>RD</span></div>
+            <form id="login-form">
+                <h2>Iniciar Sesión</h2>
+                <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="login-user" placeholder="Usuario" required></div>
+                <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="login-pass" placeholder="Contraseña" required></div>
+                <button type="submit" class="btn-primary">Entrar</button>
+                <p class="switch-auth">¿No tienes cuenta? <a href="#" id="go-to-register">Regístrate</a></p>
+            </form>
+            <form id="register-form" class="hidden">
+                <h2>Nuevo Cliente</h2>
+                <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="reg-user" placeholder="Crea un Usuario" required></div>
+                <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="reg-pass" placeholder="Crea una Contraseña" required></div>
+                <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="Correo Electrónico" required></div>
+                <button type="submit" class="btn-secondary">Crear Cuenta</button>
+                <p class="switch-auth">¿Ya tienes usuario? <a href="#" id="go-to-login">Ingresa aquí</a></p>
+            </form>
+        </div>
+        <div class="quick-access-bar">
+            <div class="quick-btn" onclick="toggleToken()"><div class="icon-circle"><i class="fa-solid fa-key"></i></div><span>Token</span></div>
+            <div class="quick-btn" onclick="toggleNFCWallet()"><div class="icon-circle"><i class="fa-solid fa-wallet"></i></div><span>Billetera</span></div>
+            <div class="quick-btn"><div class="icon-circle"><i class="fa-solid fa-location-dot"></i></div><span>Ubícanos</span></div>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="dashboard-layout hidden">
+        <aside class="sidebar">
+            <div class="brand"><i class="fa-solid fa-building-columns"></i> Bankly</div>
+            <nav>
+                <li onclick="navigate('home')" class="active"><i class="fa-solid fa-house"></i> Inicio</li>
+                <li onclick="navigate('transfers')"><i class="fa-solid fa-money-bill-transfer"></i> Transferir</li>
+                <li onclick="navigate('beneficiaries')"><i class="fa-solid fa-users"></i> Beneficiarios</li>
+                <li onclick="navigate('checks')"><i class="fa-solid fa-money-check-dollar"></i> Depósito Cheques</li>
+                <li onclick="navigate('cards')"><i class="fa-solid fa-credit-card"></i> Tarjetas</li>
+                <li onclick="navigate('loans')"><i class="fa-solid fa-hand-holding-dollar"></i> Préstamos</li>
+                <li onclick="navigate('requests')"><i class="fa-solid fa-file-signature"></i> Solicitudes</li>
+                <li onclick="navigate('support')"><i class="fa-solid fa-headset"></i> Servicio al Cliente</li>
+            </nav>
+            <div class="logout-area"><button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button></div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h2 id="page-title">Resumen Financiero</h2>
+                <div class="header-actions">
+                    <div class="user-profile" id="btn-profile" onclick="toggleSettings()" style="cursor: pointer;">
+                        <span id="display-username">Usuario</span>
+                        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    </div>
+                </div>
+            </header>
+
+            <section id="view-home" class="view-section active">
+                <div class="accounts-grid">
+                    <div class="account-card blue-card"><div class="acc-header"><span>Cuenta de Ahorro</span><i class="fa-solid fa-piggy-bank"></i></div><h3 id="bal-savings">RD$ 0.00</h3><p class="acc-num">**** 1024</p></div>
+                    <div class="account-card dark-card"><div class="acc-header"><span>Cuenta Nómina</span><i class="fa-solid fa-briefcase"></i></div><h3 id="bal-payroll">RD$ 0.00</h3><p class="acc-num">**** 8892</p></div>
+                    <div class="account-card green-card"><div class="acc-header"><span>Cuenta Digital</span><i class="fa-solid fa-mobile-screen"></i></div><h3 id="bal-digital">RD$ 0.00</h3><p class="acc-num">**** 5501</p></div>
+                </div>
+                <div class="history-container"><h3>Movimientos Recientes</h3><table class="history-table"><thead><tr><th>Concepto</th><th>Fecha</th><th>Monto</th></tr></thead><tbody id="movements-body"></tbody></table></div>
+            </section>
+
+            <section id="view-transfers" class="view-section hidden">
+                <div class="form-container">
+                    <h3>Realizar Transferencia</h3>
+                    <form id="transfer-form">
+                        <div class="form-group"><label>Cuenta de Origen</label><select id="origin-account" class="full-select"><option value="savings">Ahorro - **** 1024</option><option value="payroll">Nómina - **** 8892</option><option value="digital">Digital - **** 5501</option></select></div>
+                        <div class="form-group"><label>Banco Destino</label><select class="full-select"><option>Banco Popular</option><option>Banreservas</option><option>BHD</option><option>Bankly (Interno)</option></select></div>
+                        <div class="form-group"><label>Número de Cuenta</label><input type="number" placeholder="Ingrese cuenta destino" required></div>
+                        <div class="form-group"><label>Monto a Transferir</label><input type="number" id="transfer-amount" placeholder="RD$ 0.00" required></div>
+                        <button type="submit" class="btn-primary full-btn">Confirmar Transferencia</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="view-beneficiaries" class="view-section hidden">
+                <div class="beneficiaries-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;"><h3>Mis Beneficiarios</h3><button class="btn-primary" onclick="showAddBeneficiaryForm()" style="width:auto; margin:0;"><i class="fa-solid fa-plus"></i> Nuevo</button></div>
+                <div id="beneficiaries-list" class="beneficiaries-grid"></div>
+                <div id="add-beneficiary-container" class="form-container hidden" style="margin-top:20px; border:2px solid var(--primary);">
+                    <h4><i class="fa-solid fa-user-plus"></i> Agregar Nuevo Contacto</h4>
+                    <form id="add-beneficiary-form">
+                        <div class="form-group"><label>Alias</label><input type="text" id="ben-alias" placeholder="Ej: Mamá" required></div>
+                        <div class="form-group"><label>Banco</label><select id="ben-bank" class="full-select"><option>Banco Popular</option><option>Banreservas</option><option>BHD</option><option>Bankly</option></select></div>
+                        <div class="form-group"><label>Cuenta</label><input type="number" id="ben-account" required></div>
+                        <div class="form-group"><label>Cédula</label><input type="text" id="ben-cedula" required></div>
+                        <div class="form-group"><label>Nombre</label><input type="text" id="ben-name" required></div>
+                        <button type="submit" class="btn-primary full-btn">Guardar</button>
+                        <button type="button" class="btn-secondary full-btn" style="background:#ccc; color:#333;" onclick="hideAddBeneficiaryForm()">Cancelar</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="view-checks" class="view-section hidden">
+                <div class="form-container"><h3>Depósito de Cheque Móvil</h3><p class="info-text">Fondos disponibles en 24h.</p><form id="check-deposit-form"><div class="form-group"><label>Depositar en:</label><select id="check-dest-account" class="full-select"><option value="savings">Cuenta Ahorro</option><option value="payroll">Cuenta Nómina</option></select></div><div class="form-group"><label>Monto</label><input type="number" id="check-amount" required></div><div class="form-group"><label>No. Cheque</label><input type="text" required></div><div class="check-photos"><div class="photo-box"><i class="fa-solid fa-camera"></i><span>Frente</span></div><div class="photo-box"><i class="fa-solid fa-camera"></i><span>Reverso</span></div></div><button type="submit" class="btn-primary full-btn">Depositar</button></form></div>
+            </section>
+
+            <section id="view-cards" class="view-section hidden">
+                <div class="cards-layout">
+                    <div class="credit-card-visual"><div class="chip"></div><div class="bank-name">Bankly Black</div><div class="card-number">4550 1234 5678 9012</div><div class="card-data"><span><span id="card-holder">NOMBRE</span></span><span>EXP 12/28</span></div></div>
+                    <div class="card-details-panel"><h3>Detalle Tarjeta</h3><div class="detail-row"><span>Límite:</span><strong>RD$ 50,000.00</strong></div><div class="detail-row"><span>Deuda:</span><strong class="red-text" id="cc-balance">RD$ 0.00</strong></div><div class="detail-row"><span>Disponible:</span><strong class="green-text" id="cc-available">RD$ 50,000.00</strong></div><button onclick="openPayModal()" class="btn-secondary full-btn">Pagar Tarjeta</button></div>
+                </div>
+            </section>
+
+            <section id="view-loans" class="view-section hidden">
+                <div id="active-loans-list"></div><div class="promo-box"><div class="promo-text"><h4>¿Necesitas Dinero?</h4><p>Préstamo al instante.</p></div><button onclick="showLoanForm()" class="btn-primary">Solicitar</button></div>
+                <div id="loan-request-form" class="form-container hidden" style="margin-top:20px;"><h3>Solicitud Rápida</h3><form id="form-loan-request"><div class="form-group"><label>Monto</label><input type="number" id="loan-amount" required></div><div class="form-group"><label>Plazo</label><select class="full-select"><option>12 Meses</option><option>24 Meses</option></select></div><button type="submit" class="btn-primary full-btn">Recibir Dinero</button></form></div>
+            </section>
+
+            <section id="view-requests" class="view-section hidden"><div class="requests-grid"><div class="req-card"><i class="fa-solid fa-car"></i><h4>Vehicular</h4><button class="btn-outline">Solicitar</button></div><div class="req-card"><i class="fa-solid fa-house"></i><h4>Hipotecario</h4><button class="btn-outline">Solicitar</button></div><div class="req-card"><i class="fa-solid fa-credit-card"></i><h4>Tarjeta +</h4><button class="btn-outline">Solicitar</button></div></div></section>
+            <section id="view-support" class="view-section hidden"><div class="support-container"><div class="support-item"><i class="fa-brands fa-whatsapp"></i><h3>WhatsApp</h3><button class="btn-secondary">Chatear</button></div><div class="support-item"><i class="fa-solid fa-phone"></i><h3>Llámanos</h3><button class="btn-secondary">Llamar</button></div></div></section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
