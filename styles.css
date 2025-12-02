@@ -46,6 +46,15 @@ body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidde
 .sidebar.collapsed .menu-label, .sidebar.collapsed .chevron, .sidebar.collapsed .sub-menu { display: none !important; }
 .sidebar.collapsed li i { margin: 0; font-size: 1.2rem; }
 
+/* NUEVO: SIDEBAR USER FOOTER */
+.sidebar-user-footer { padding: 20px; border-top: 1px solid #eee; display: flex; align-items: center; gap: 15px; }
+.user-footer-icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; }
+.user-footer-info { display: flex; flex-direction: column; }
+.user-footer-info span { font-weight: 600; font-size: 0.9rem; }
+.btn-logout-link { background: none; border: none; color: #e74c3c; cursor: pointer; text-align: left; font-size: 0.8rem; padding: 0; margin-top: 2px; }
+.sidebar.collapsed .sidebar-user-footer { flex-direction: column; text-align: center; }
+.sidebar.collapsed .user-footer-info { display: none; }
+
 .main-content { flex: 1; padding: 30px; overflow-y: auto; background: #f8f9fb; }
 header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .header-left { display: flex; align-items: center; gap: 20px; }
