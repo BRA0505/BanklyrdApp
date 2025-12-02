@@ -12,35 +12,33 @@
 
     <div id="notification" class="notification hidden"><div class="notif-content"><i class="fa-solid fa-circle-check"></i><span id="notif-msg">Operación Exitosa</span></div></div>
 
-    <div id="pin-auth-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('pin-auth-modal')">&times;</span>
-            <h3 style="color:var(--primary);"><i class="fa-solid fa-lock"></i> Seguridad</h3>
-            <p style="margin-bottom:15px; color:#666;">Ingresa tu PIN de 4 dígitos</p>
-            <form id="form-auth-pin">
-                <div class="form-group">
-                    <input type="password" id="auth-pin-input" placeholder="0000" maxlength="4" style="text-align:center; font-size:1.5rem; letter-spacing:5px;" required>
-                </div>
-                <button type="submit" class="btn-primary full-btn">Confirmar</button>
-            </form>
+    <div id="history-modal" class="modal hidden">
+        <div class="modal-content" style="width: 400px; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
+            <span class="close-modal" onclick="closeModal('history-modal')">&times;</span>
+            <h3>Historial Completo</h3>
+            <div class="history-scroll-area" style="overflow-y: auto; flex: 1; margin-top: 10px;">
+                <table class="history-table">
+                    <thead><tr><th>Concepto</th><th>Fecha</th><th>Monto</th></tr></thead>
+                    <tbody id="full-history-body">
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div id="forgot-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('forgot-modal')">&times;</span><h3>Recuperar</h3><form id="forgot-form"><div class="form-group"><input type="text" id="recover-user" placeholder="Usuario" required></div><button type="submit" class="btn-primary full-btn">Buscar</button></form><div id="recover-result" class="hidden"></div></div></div>
-    
     <div id="token-modal" class="modal hidden"><div class="modal-content token-box"><span class="close-modal" onclick="closeModal('token-modal')">&times;</span><h3><i class="fa-solid fa-shield-halved"></i> Token</h3><div class="token-display" id="token-code">------</div><div class="timer-bar"><div class="bar-fill"></div></div></div></div>
-    
     <div id="pay-card-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('pay-card-modal')">&times;</span><h3>Pagar TC</h3><p>Deuda: <strong class="red-text" id="modal-cc-debt">RD$ 0.00</strong></p><form id="form-pay-card"><div class="form-group"><select id="pay-origin-account" class="full-select"><option value="savings">Ahorro</option><option value="payroll">Nómina</option></select></div><div class="form-group"><input type="number" id="pay-card-amount" required></div><button type="submit" class="btn-primary full-btn">Pagar</button></form></div></div>
-    
     <div id="nfc-wallet-modal" class="modal hidden"><div class="modal-content wallet-bg"><span class="close-modal white-x" onclick="closeModal('nfc-wallet-modal')">&times;</span><h3>NFC Activo <i class="fa-solid fa-wifi fa-rotate-90"></i></h3><div class="nfc-card nfc-primary"><div class="nfc-top"><span>Bankly Black</span></div><div class="nfc-number">**** 9012</div></div></div></div>
-    
     <div id="settings-modal" class="modal hidden"><div class="modal-content settings-box"><span class="close-modal" onclick="closeModal('settings-modal')">&times;</span><h3>Ajustes</h3><div class="settings-tabs"><button class="tab-btn active" onclick="showTab('security')">Seguridad</button><button class="tab-btn" onclick="showTab('profile')">Perfil</button></div><div id="tab-security" class="tab-content"><form id="change-pass-form"><div class="form-group"><div class="pass-wrapper"><input type="password" id="new-pass" placeholder="Nueva Clave" required><i class="fa-solid fa-eye toggle-eye" onclick="togglePass('new-pass')"></i></div></div><button type="submit" class="btn-primary full-btn">Cambiar</button></form></div><div id="tab-profile" class="tab-content hidden"><form id="update-profile-form"><div class="form-group"><input type="email" id="profile-email" placeholder="Email"></div><button type="submit" class="btn-primary full-btn">Guardar</button></form></div></div></div>
-    <div id="services-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('services-modal')">&times;</span><h3>Pagar Servicios</h3><form id="form-services"><div class="form-group"><label>Servicio</label><select class="full-select"><option>Electricidad (Edeeste)</option><option>Agua (CAASD)</option><option>Internet (Claro)</option><option>Internet (Altice)</option></select></div><div class="form-group"><input type="text" placeholder="Referencia / Contrato" required></div><div class="form-group"><input type="number" id="service-amount" placeholder="Monto" required></div><button type="submit" class="btn-primary full-btn">Pagar</button></form></div></div>
-    <div id="recharge-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('recharge-modal')">&times;</span><h3>Recarga Celular</h3><form id="form-recharge"><div class="form-group"><label>Telefonía</label><select class="full-select"><option>Claro</option><option>Altice</option><option>Viva</option></select></div><div class="form-group"><input type="tel" placeholder="Número (809...)" required></div><div class="form-group"><input type="number" id="recharge-amount" placeholder="Monto" required></div><button type="submit" class="btn-primary full-btn">Recargar</button></form></div></div>
-    <div id="qr-modal" class="modal hidden"><div class="modal-content wallet-bg"><span class="close-modal white-x" onclick="closeModal('qr-modal')">&times;</span><h3 style="color:white">Escanear QR</h3><div class="qr-scanner"><div class="scan-line"></div></div><p style="color:#ccc; margin-top:10px;">Apunte al código QR para pagar</p><button class="btn-primary full-btn" style="margin-top:15px;" onclick="dummyAction('Pago QR Procesado')">Simular Escaneo</button></div></div>
+    <div id="services-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('services-modal')">&times;</span><h3>Pagar Servicios</h3><form id="form-services"><div class="form-group"><label>Servicio</label><select id="service-type" class="full-select"><option>Electricidad (Edeeste)</option><option>Agua (CAASD)</option><option>Internet (Claro)</option><option>Internet (Altice)</option></select></div><div class="form-group"><input type="text" placeholder="Referencia / Contrato" required></div><div class="form-group"><input type="number" id="service-amount" placeholder="Monto" required></div><button type="submit" class="btn-primary full-btn">Pagar</button></form></div></div>
+    <div id="recharge-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('recharge-modal')">&times;</span><h3>Recarga Celular</h3><form id="form-recharge"><div class="form-group"><label>Telefonía</label><select id="recharge-provider" class="full-select"><option>Claro</option><option>Altice</option><option>Viva</option></select></div><div class="form-group"><input type="tel" placeholder="Número (809...)" required></div><div class="form-group"><input type="number" id="recharge-amount" placeholder="Monto" required></div><button type="submit" class="btn-primary full-btn">Recargar</button></form></div></div>
+    <div id="qr-modal" class="modal hidden"><div class="modal-content wallet-bg"><span class="close-modal white-x" onclick="closeModal('qr-modal')">&times;</span><h3 style="color:white">Escanear QR</h3><div class="qr-scanner"><div class="scan-line"></div></div><p style="color:#ccc; margin-top:10px;">Apunte al código QR para pagar</p><button class="btn-primary full-btn" style="margin-top:15px;" onclick="simulateQRPayment()">Simular Escaneo</button></div></div>
     <div id="map-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('map-modal')">&times;</span><h3>Sucursales Cercanas</h3><div class="map-placeholder"><i class="fa-solid fa-map-location-dot"></i><p>Santo Domingo, RD</p></div><p style="font-size:0.8rem; margin-top:10px;">Abierto hoy hasta las 5:00 PM</p></div></div>
     <div id="chequera-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('chequera-modal')">&times;</span><h3>Pedir Chequera</h3><form id="form-chequera"><div class="form-group"><select class="full-select"><option>25 Hojas</option><option>50 Hojas</option></select></div><div class="form-group"><select class="full-select"><option>Retirar en Sucursal</option><option>Envío a Domicilio</option></select></div><button type="submit" class="btn-primary full-btn">Solicitar</button></form></div></div>
     <div id="limit-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('limit-modal')">&times;</span><h3>Aumento Límite</h3><form id="form-limit"><div class="form-group"><label>Tarjeta</label><select class="full-select"><option>Bankly Black **** 9012</option></select></div><div class="form-group"><label>Nuevo Límite Deseado</label><input type="number" required></div><div class="form-group"><label>Ingreso Mensual</label><input type="number" required></div><button type="submit" class="btn-primary full-btn">Enviar Solicitud</button></form></div></div>
+    
+    <div id="pin-auth-modal" class="modal hidden"><div class="modal-content"><span class="close-modal" onclick="closeModal('pin-auth-modal')">&times;</span><h3 style="color:var(--primary);"><i class="fa-solid fa-lock"></i> Seguridad</h3><p style="margin-bottom:15px; color:#666;">Ingresa tu PIN de 4 dígitos</p><form id="form-auth-pin"><div class="form-group"><input type="password" id="auth-pin-input" placeholder="0000" maxlength="4" style="text-align:center; font-size:1.5rem; letter-spacing:5px;" required></div><button type="submit" class="btn-primary full-btn">Confirmar</button></form></div></div>
 
     <div id="auth-screen" class="auth-container">
         <div class="auth-overlay"></div>
@@ -54,19 +52,15 @@
                 <button type="submit" class="btn-primary">Iniciar Sesión</button>
                 <p class="switch-auth">¿Nuevo? <a href="#" id="go-to-register">Crear Cuenta</a></p>
             </form>
-            
             <form id="register-form" class="hidden">
                 <h2>Registro</h2>
                 <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="reg-user" placeholder="Usuario" required></div>
                 <div class="input-group"><i class="fa-solid fa-lock"></i><div class="pass-wrapper-login"><input type="password" id="reg-pass" placeholder="Contraseña" required><i class="fa-solid fa-eye toggle-eye-main" onclick="togglePass('reg-pass')"></i></div></div>
-                
                 <div class="input-group"><i class="fa-solid fa-shield-halved"></i><input type="password" id="reg-pin" placeholder="PIN de 4 dígitos" maxlength="4" required></div>
-                
                 <button type="submit" class="btn-secondary">Registrarse</button>
                 <p class="switch-auth"><a href="#" id="go-to-login">Volver</a></p>
             </form>
         </div>
-        
         <div class="quick-access-bar">
             <div class="quick-btn" onclick="requestPin('token')"><div class="icon-circle"><i class="fa-solid fa-key"></i></div><span>Token</span></div>
             <div class="quick-btn" onclick="requestPin('wallet')"><div class="icon-circle"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div>
@@ -121,7 +115,10 @@
                     <div class="chart-card"><h4>Distribución</h4><div class="chart-wrapper"><div class="donut-chart" id="expense-chart"><div class="chart-center"><span id="chart-percent">0%</span></div></div></div><div class="chart-legend"><span><i class="fa-solid fa-circle" style="color:var(--secondary)"></i> Ingresos</span><span><i class="fa-solid fa-circle" style="color:#eee"></i> Gastos</span></div></div>
                     <div class="chart-card"><h4>Semanal</h4><div class="bar-chart"><div class="bar-group"><div class="bar income" style="height: 60%;"></div><div class="bar expense" style="height: 40%;"></div><span>Lun</span></div><div class="bar-group"><div class="bar income" style="height: 80%;"></div><div class="bar expense" style="height: 30%;"></div><span>Mar</span></div><div class="bar-group"><div class="bar income" style="height: 50%;"></div><div class="bar expense" style="height: 70%;"></div><span>Mié</span></div><div class="bar-group"><div class="bar income" style="height: 90%;"></div><div class="bar expense" style="height: 20%;"></div><span>Jue</span></div></div></div>
                 </div>
-                <div class="history-container"><div class="section-header"><h3>Actividad Reciente</h3><button class="btn-text" onclick="dummyAction('Ver Todo')">Ver todo</button></div><table class="history-table"><thead><tr><th>Concepto</th><th>Fecha</th><th>Monto</th></tr></thead><tbody id="movements-body"></tbody></table></div>
+                <div class="history-container">
+                    <div class="section-header"><h3>Actividad Reciente</h3><button class="btn-text" onclick="openHistory()">Ver todo</button></div>
+                    <table class="history-table"><thead><tr><th>Concepto</th><th>Fecha</th><th>Monto</th></tr></thead><tbody id="movements-body"></tbody></table>
+                </div>
             </section>
 
             <section id="view-transfers" class="view-section hidden"><div class="form-container"><h3 id="transfer-title">Transferir</h3><form id="transfer-form"><div class="form-group"><label>Origen</label><select id="origin-account" class="full-select"><option value="savings">Ahorro</option><option value="payroll">Nómina</option><option value="invest">Inversiones</option></select></div><div class="form-group"><label id="dest-label">Destino</label><select id="dest-bank" class="full-select"><option value="Bankly">Tercero Bankly</option><option value="Popular">Banco Popular</option><option value="BHD">BHD León</option><option value="Banreservas">Banreservas</option></select></div><div class="form-group" id="dest-account-group"><label>Cuenta / Cédula</label><input type="number" placeholder="Ingrese número" required></div><div class="form-group"><label>Monto</label><input type="number" id="transfer-amount" placeholder="RD$ 0.00" required></div><button type="submit" class="btn-primary full-btn">Enviar</button></form></div></section>
