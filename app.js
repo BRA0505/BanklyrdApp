@@ -32,8 +32,11 @@ function setupEventListeners() {
     document.getElementById("check-deposit-form").onsubmit = (e) => { e.preventDefault(); depositCheck(); };
     document.getElementById("add-beneficiary-form").onsubmit = (e) => { e.preventDefault(); saveBeneficiary(); };
     document.getElementById("form-loan-request").onsubmit = (e) => { e.preventDefault(); processLoan(); };
-    document.getElementById("form-services").onsubmit = (e) => { e.preventDefault(); processPayment("Servicio Pagado"); };
-    document.getElementById("form-recharge").onsubmit = (e) => { e.preventDefault(); processPayment("Recarga Exitosa"); };
+    
+    // NUEVOS FORMULARIOS CON LOGICA ESPECIFICA
+    document.getElementById("form-services").onsubmit = (e) => { e.preventDefault(); payService(); };
+    document.getElementById("form-recharge").onsubmit = (e) => { e.preventDefault(); payRecharge(); };
+    
     document.getElementById("form-chequera").onsubmit = (e) => { e.preventDefault(); simpleRequest("Chequera Solicitada"); };
     document.getElementById("form-limit").onsubmit = (e) => { e.preventDefault(); simpleRequest("Aumento Solicitado"); };
     
@@ -75,7 +78,6 @@ function toggleView(view) {
     else { document.getElementById("register-form").classList.add("hidden"); document.getElementById("login-form").classList.remove("hidden"); }
 }
 
-// LOGICA USUARIOS
 function registerUser() {
     const user = document.getElementById("reg-user").value.trim();
     const pass = document.getElementById("reg-pass").value.trim();
@@ -116,8 +118,6 @@ function showDashboard() {
     document.getElementById("auth-screen").classList.add("hidden");
     document.getElementById("dashboard-screen").classList.remove("hidden");
     document.getElementById("display-username").textContent = currentUser.username;
-    // Nuevo: Poner nombre en el sidebar footer
-    document.getElementById("sidebar-username").textContent = currentUser.username;
     setGreeting(); updateUI();
 }
 
@@ -129,15 +129,78 @@ function updateUI() {
     document.getElementById("bal-invest").textContent = fmt(currentUser.accounts.invest);
     document.getElementById("cc-balance").textContent = fmt(currentUser.creditCard.balance);
     document.getElementById("modal-cc-debt").textContent = fmt(currentUser.creditCard.balance);
+    
+    // Tabla Inicio (Solo 5)
     const tbody = document.getElementById("movements-body"); tbody.innerHTML = "";
     currentUser.movements.slice().reverse().slice(0, 5).forEach(m => { 
         tbody.innerHTML += `<tr><td>${m.concept}</td><td>${m.date}</td><td style="font-weight:600; color:${m.amount > 0 ? 'green' : 'red'}">${fmt(m.amount)}</td></tr>`;
     });
+    
     renderChart(); renderBeneficiaries();
     const cardVisual = document.getElementById("my-credit-card");
     if(currentUser.creditCard.isBlocked) { cardVisual.classList.add("blocked"); } else { cardVisual.classList.remove("blocked"); }
 }
 
+// LOGICA SERVICIOS Y RECARGAS (REALES)
+function payService() {
+    const serviceType = document.getElementById("service-type").value;
+    const amount = parseFloat(document.getElementById("service-amount").value);
+    
+    if (isNaN(amount) || amount <= 0) return;
+    if (currentUser.accounts.savings < amount) { alert("Saldo insuficiente (Cuenta Ahorro)"); return; }
+    
+    currentUser.accounts.savings -= amount;
+    currentUser.movements.push({ concept: "Pago " + serviceType, date: getToday(), amount: -amount });
+    
+    saveData();
+    processPayment("Servicio Pagado Exitosamente");
+    closeModal('services-modal');
+    document.getElementById("form-services").reset();
+}
+
+function payRecharge() {
+    const provider = document.getElementById("recharge-provider").value;
+    const amount = parseFloat(document.getElementById("recharge-amount").value);
+    
+    if (isNaN(amount) || amount <= 0) return;
+    if (currentUser.accounts.savings < amount) { alert("Saldo insuficiente (Cuenta Ahorro)"); return; }
+    
+    currentUser.accounts.savings -= amount;
+    currentUser.movements.push({ concept: "Recarga " + provider, date: getToday(), amount: -amount });
+    
+    saveData();
+    processPayment("Recarga Exitosa");
+    closeModal('recharge-modal');
+    document.getElementById("form-recharge").reset();
+}
+
+function simulateQRPayment() {
+    const amount = 500.00; // Monto simulado fijo o aleatorio
+    if (currentUser.accounts.savings < amount) { alert("Saldo insuficiente"); return; }
+    
+    currentUser.accounts.savings -= amount;
+    currentUser.movements.push({ concept: "Pago con QR", date: getToday(), amount: -amount });
+    
+    saveData();
+    processPayment("Pago QR Procesado");
+    closeModal('qr-modal');
+}
+
+// LOGICA VER TODO EL HISTORIAL
+function openHistory() {
+    const tbody = document.getElementById("full-history-body");
+    tbody.innerHTML = "";
+    const fmt = (n) => "RD$ " + n.toLocaleString('en-US', {minimumFractionDigits: 2});
+    
+    // Mostrar TODOS los movimientos
+    currentUser.movements.slice().reverse().forEach(m => { 
+        tbody.innerHTML += `<tr><td>${m.concept}</td><td>${m.date}</td><td style="font-weight:600; color:${m.amount > 0 ? 'green' : 'red'}">${fmt(m.amount)}</td></tr>`;
+    });
+    
+    openModal('history-modal');
+}
+
+// FUNCIONES GENERALES
 function toggleCardBlock() {
     currentUser.creditCard.isBlocked = !currentUser.creditCard.isBlocked;
     saveData();
@@ -216,7 +279,6 @@ function setGreeting() { const h = new Date().getHours(); document.getElementByI
 function showNotification(m) { const n = document.getElementById("notification"); document.getElementById("notif-msg").textContent = m; n.classList.remove("hidden"); setTimeout(() => n.classList.add("hidden"), 3000); }
 window.dummyAction = (a) => showNotification(`Acción: ${a}`);
 
-// MODAL CONTROLS
 window.openModal = (id) => document.getElementById(id).classList.remove("hidden");
 window.closeModal = (id) => document.getElementById(id).classList.add("hidden");
 window.toggleSettings = () => { const m = document.getElementById("settings-modal"); m.classList.contains("hidden") ? m.classList.remove("hidden") : m.classList.add("hidden"); };
